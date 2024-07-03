@@ -1,0 +1,30 @@
+digraph BehaviorTree {
+    Root [label="Root (Parallel)"];
+    Topics2BB [label="Topics2BB (Sequence)"];
+    BatteryStatus2bb [label="BatteryStatus2bb"];
+    LaserScan2bb [label="LaserScan2bb"];
+    Priorities [label="Priorities (Selector)"];
+    CollisionSelector [label="Collision Selector (Selector)"];
+    CollisionSequence [label="Collision Sequence (Sequence)"];
+    ObstacleDetected [label="Obstacle Detected? (CheckBlackboardVariable)"];
+    StopMotion [label="StopMotion"];
+    BatteryLowSelector [label="Battery Low Selector (Selector)"];
+    BatteryLowSequence [label="Battery Low Sequence (Sequence)"];
+    BatteryLow [label="Battery Low? (CheckBlackboardVariable)"];
+    Rotate [label="Rotate"];
+    Idle [label="Idle (Running)"];
+
+    Root -> Topics2BB;
+    Root -> Priorities;
+    Topics2BB -> BatteryStatus2bb;
+    Topics2BB -> LaserScan2bb;
+    Priorities -> CollisionSelector;
+    CollisionSelector -> CollisionSequence;
+    CollisionSelector -> BatteryLowSelector;
+    CollisionSequence -> ObstacleDetected;
+    CollisionSequence -> StopMotion;
+    BatteryLowSelector -> BatteryLowSequence;
+    BatteryLowSelector -> Idle;
+    BatteryLowSequence -> BatteryLow;
+    BatteryLowSequence -> Rotate;
+}
