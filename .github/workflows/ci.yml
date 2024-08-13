@@ -25,5 +25,5 @@ jobs:
         python -m pip install --upgrade pip
 
     - name: Run tests
-      run: python -m unittest multi_robile/tests/test_parallel_operation.py
-      working-directory: .
+      run: python test_parallel_operation.py
+      working-directory: multi_robile/tests
