@@ -28,7 +28,8 @@ setup(
     tests_require=["pytest"],
     entry_points={
         "console_scripts": [
-            "parallel_operation = multi_robile.parallel_operation:main"
+            "parallel_operation = multi_robile.parallel_operation:main",
+            "go_to_goal = multi_robile.gotogoal:main"
         ],
     },
 )

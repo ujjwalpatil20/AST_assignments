@@ -94,11 +94,16 @@ def generate_launch_description():
 
     def generate_robot_descriptions(robot_count):
         robots = []
-        robots.append({'name': 'robile_0', 'x_pose': 0.0, 'y_pose': 1.0, 'z_pose': 0.01})
-        robots.append({'name': 'robile_1', 'x_pose': 0.0, 'y_pose': 0.0, 'z_pose': 0.01})
+        for i in range(robot_count):
+            robots.append({
+                'name': f'robile_{i}',
+                'x_pose': 2.0 * i,  # each subsequent robot is 2 meters apart on the x-axis
+                'y_pose': 0.0,
+                'z_pose': 0.01
+            })
         return robots
 
-    robots = generate_robot_descriptions(2)
+    robots = generate_robot_descriptions(3)
     spawn_robots_cmds = []
 
     for robot in robots:
