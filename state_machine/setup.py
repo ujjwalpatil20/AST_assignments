@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-package_name = 'ast_state_machine'
+package_name = 'state_machine'
 
 setup(
     name=package_name,
@@ -20,8 +20,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'stateMachine = ast_state_machine.stateMachine:main',
-            'laserTest = ast_state_machine.laserTest:main',
+            'stateMachine = state_machine.stateMachine:main',
+            'laserTest = state_machine.laserTest:main',
         ],
     },
 )

@@ -4,15 +4,14 @@ from geometry_msgs.msg import Twist, PoseStamped
 from nav_msgs.msg import Odometry
 from math import atan2, sqrt, pi
 import numpy as np
-from tf_transformations import euler_from_quaternion
 
 
 class OdometryMotionModel(Node):
     def __init__(self):
         super().__init__('odometry_motion_model')
-        self.publisher_ = self.create_publisher(Twist, 'robile_0/cmd_vel', 10)
-        self.subscriber = self.create_subscription(Odometry, 'robile_0/odom', self.callback, 10)
-        # self.goal = self.create_subscription(PoseStamped, '/goal_pose', self.goal_data, 10)
+        self.publisher_ = self.create_publisher(Twist, '/robile_0/cmd_vel', 10)
+        self.subscriber = self.create_subscription(Odometry, '/robile_0/odom', self.odom_callback, 10)
+        self.goal_pose_sub = self.create_subscription(PoseStamped, "/goal_pose", self.goal_callback, 10)
 
         self.state = [True, False, False]
         self.stop_state = False
@@ -21,7 +20,7 @@ class OdometryMotionModel(Node):
         self.threshold = 0.2  # How close to get to the goal position and orientation
         self.distance_threshold = 0.5
 
-        self.goal_x, self.goal_y, self.goal_theta = 2.0, -3.0, -2.0 # Goal Position
+        # self.goal_x, self.goal_y, self.goal_theta = 2.0, -3.0, -2.0 # Goal Position
         self.position_x, self.position_y, self.orientation = 0.0, 0.0, 0.0  # Initial x, y, theta in radians
         
         self.w = 0.0 # For storing the omega value of the odom
@@ -36,20 +35,23 @@ class OdometryMotionModel(Node):
         self.new_pos_x = 0.0
         self.new_pos_y = 0.0
 
-    def yaw_cal(self, data):
-        _, _, yaw = euler_from_quaternion([data.orientation.x, data.orientation.y, data.orientation.z, data.orientation.w])
-        return yaw
-    
-    def goal_data(self, msg):
-        orientation_goal = self.yaw_cal(msg.pose)
-        self.goal_x, self.goal_y, self.goal_theta = msg.pose.position.x,msg.pose.position.y,orientation_goal
-        self.rotate_to_goal()
 
-    def callback(self, msg):
+    def odom_callback(self, msg):
         self.w = msg.pose.pose.orientation.w
         self.current_pos_x = msg.pose.pose.position.x
         self.current_pos_y = msg.pose.pose.position.y
 
+    def goal_callback(self, data):
+        pose_stamp = data.pose.position
+        # self.goal_pose = self.rescale_pose_to_mapsize(pose_stamp, self.grid)
+        self.get_logger().info(f'Goal_pose in grid:{self.goal_pose_sub}')
+        self.get_logger().info(f"Getting goal pose: {pose_stamp}")
+        
+        self.goal_x = pose_stamp.x 
+        self.goal_y = pose_stamp.y
+        self.goal_theta = 0.0
+
+        self.rotate_to_goal()
     
     def rotate_right(self, rad_ang):
         return 1+(rad_ang/pi)
@@ -142,16 +144,9 @@ class OdometryMotionModel(Node):
                 self.publisher_.publish(twist)
             else:
                 twist = Twist()
-                twist.linear.x = 0.0
-                twist.angular.z = 0.0
                 self.publisher_.publish(twist)
                 self.get_logger().info(f'Goal reached !!!')
-                self.state[2] = False
-
-
-        
-
-        
+                self.state[2] = False   
 
 def main(args=None):
     rclpy.init(args=args)
@@ -159,7 +154,7 @@ def main(args=None):
     
     while rclpy.ok():
         rclpy.spin_once(node)
-        
+        # node.rotate_to_goal()
     
     node.destroy_node()
     rclpy.shutdown()

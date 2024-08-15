@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import MagicMock
 import rclpy
-from ast_work.statemachine import MonitorBatteryAndCollision, RotateBase, StopMotion
+from behaviour_tree.statemachine import MonitorBatteryAndCollision, RotateBase, StopMotion
 
 class TestStateMachine(unittest.TestCase):
     def setUp(self):

@@ -90,6 +90,16 @@ def generate_launch_description():
                     'use_sim_time': use_sim_time
                 }]
             ),
+
+            Node(
+                package="tf2_ros",
+                executable="static_transform_publisher",
+                output="screen",
+                arguments=["0", "0", "0", "0", "0",
+                            "0", "base_footprint", "base_link"],
+                namespace=namespace,
+            ),
+            LogInfo(msg=f"Spawning robot {namespace} at ({x_pose}, {y_pose})")
         ]
 
     def generate_robot_descriptions(robot_count):

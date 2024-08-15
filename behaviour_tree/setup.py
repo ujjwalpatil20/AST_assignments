@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-package_name = 'ast_work'
+package_name = 'behaviour_tree'
 
 setup(
     name=package_name,
@@ -20,11 +20,11 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'statemachine_node = ast_work.statemachine:main',
-            'statemachine_ros_node = ast_work.statemachine_rostechnique:main',
-            'rotate_360 = ast_work.rotaterobot:main',
-            'laser_data = ast_work.laserdatareading:main',
-            'behaviour_tree = ast_work.behaviour_tree:main'
+            'statemachine_node = behaviour_tree.statemachine:main',
+            'statemachine_ros_node = behaviour_tree.statemachine_rostechnique:main',
+            'rotate_360 = behaviour_tree.rotaterobot:main',
+            'laser_data = behaviour_tree.laserdatareading:main',
+            'behaviour_tree = behaviour_tree.behaviour_tree:main'
         ],
     },
 )
