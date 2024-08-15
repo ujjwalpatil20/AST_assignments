@@ -43,7 +43,7 @@ class Rotate(pt.behaviour.Behaviour):
             self.node = kwargs['node']
             self.pub_cmd_vel = self.node.create_publisher(Twist, self.topic_name , 10) #Publisher for command Velocity
         except KeyError as e:
-            error_message = "didn't find 'node' in setup's kwargs [{}][{}]".format(self.qualified_name)
+            error_message = "didn't find 'node' in setup's kwargs [{}]".format(self.qualified_name)
             raise KeyError(error_message) from e 
 
         # TODO: setup any necessary publishers or subscribers
