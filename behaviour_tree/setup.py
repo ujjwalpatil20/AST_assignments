@@ -20,8 +20,6 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'statemachine_node = behaviour_tree.statemachine:main',
-            'statemachine_ros_node = behaviour_tree.statemachine_rostechnique:main',
             'rotate_360 = behaviour_tree.rotaterobot:main',
             'laser_data = behaviour_tree.laserdatareading:main',
             'behaviour_tree = behaviour_tree.behaviour_tree:main'
